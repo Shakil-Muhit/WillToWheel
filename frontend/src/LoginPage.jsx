@@ -3,6 +3,8 @@ import "./styles/LoginPage.css"
 import {useNavigate} from 'react-router-dom'
 import { useState } from 'react'
 
+var csrf2
+
 export default function LoginPage() {
     return (
     <div className='LoginPageGridLayout'>
@@ -12,11 +14,63 @@ export default function LoginPage() {
   )
 }
 
+function LogoutComponent(){
+    const navigate = useNavigate()
+    
+
+    const handleLogOut = () => {
+        const postRegisterData = {
+          method: "POST",
+          headers: {"Content-Type" : "application/json"},
+    
+          body: JSON.stringify({
+            
+          })
+        };
+
+        const uploadData = new FormData();
+    
+        fetch("http://127.0.0.1:8000/api/users/getcsrf").then((response) => {
+          console.log(response.status)
+          return response.json()}).then((data) => {
+              // setcsrf({csrf: data.value})
+              // console.log(allposts)
+              csrf2= data
+              fetch('http://127.0.0.1:8000/api/users/logout', {
+              method: 'POST',
+              mode: 'same-origin',
+              headers: {
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+                'X-CSRFToken': csrf2.value
+              },
+              body: uploadData
+            })
+            .then( res => {
+                console.log(res)
+                navigate("/")
+          })
+            .catch(error => console.log(error))
+          })
+
+    //   fetch("/api/users/logout", postRegisterData).then((response) => response.json()).then((data) => {console.log(data);navigate("/")});     
+      }
+    
+    return(
+        <div>
+            <button style={{marginTop: "600px", backgroundColor: "black", color: "white"}} onClick={handleLogOut}>
+                logout
+            </button>
+        </div>
+    )
+}
 
 function LoginPageGridLeftComponent()
 {
+
     const navigate = useNavigate()
     return(
+        
         <div className='LoginPageGridLeftComponentLayout'>
             <div className='LoginPageMessegeCardLayout'>
                 <h1 style={{fontSize : '90px'}}>WillToWheel</h1>
@@ -30,6 +84,8 @@ function LoginPageGridLeftComponent()
                     </button>
                 </div>
             </div>
+
+            <LogoutComponent/>
         </div>
     )
 }

@@ -69,6 +69,8 @@ function LogoutComponent(){
             
           })
         };
+
+        const uploadData = new FormData();
     
         fetch("http://127.0.0.1:8000/api/users/getcsrf").then((response) => {
           console.log(response.status)
@@ -84,9 +86,12 @@ function LogoutComponent(){
                 // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
                 'X-CSRFToken': csrf2.value
               },
-              body: {}
+              body: uploadData
             })
-            .then( res => console.log(res))
+            .then( res => {
+                console.log(res)
+                navigate("/")
+          })
             .catch(error => console.log(error))
           })
 
