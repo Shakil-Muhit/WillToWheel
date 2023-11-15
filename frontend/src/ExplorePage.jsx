@@ -62,7 +62,7 @@ function ColumnBar() {
           </button>
 
           <button className='MakePostButtonLayout' onClick={() => setMakePostButtonClicked(!makePostButtonClicked)}>
-            D
+            +
           </button>
     
           <MakePostHandleComponent makePostButtonClicked={makePostButtonClicked} setMakePostButtonClicked = {setMakePostButtonClicked}/>

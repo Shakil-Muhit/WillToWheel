@@ -41,38 +41,39 @@ function LoginPageGridRightComponent()
     const [passcode, setPasscode] = useState("")
 
     function goToExplore(){
-        seeAll()
+        // seeAll()
+        navigate("/Explore")
     }
 
-    const seeAll = () =>
-    {
-        console.log(username)
-        console.log(passcode)
+    // const seeAll = () =>
+    // {
+    //     console.log(username)
+    //     console.log(passcode)
 
-        const postLoginData = {
-            method: "POST",
-            headers: {"Content-Type" : "application/json"},
+    //     const postLoginData = {
+    //         method: "POST",
+    //         headers: {"Content-Type" : "application/json"},
       
-            body: JSON.stringify({
-              username: username,
-              password: passcode
-            })
-          };
+    //         body: JSON.stringify({
+    //           username: username,
+    //           password: passcode
+    //         })
+    //       };
       
-          fetch("/api/users/login", postLoginData).then((response) => {
-            console.log(response.status)
-            if(response.status === 200 || response.status === 201)
-            {
-                return response.json()
-            }
-            else 
-            {
-                throw new Error("Something went wrong")
-            }
-          }).then((data) => {
-            navigate("/Explore");
-        }).catch((error) => console.log(error));
-    }
+    //       fetch("/api/users/login", postLoginData).then((response) => {
+    //         console.log(response.status)
+    //         if(response.status === 200 || response.status === 201)
+    //         {
+    //             return response.json()
+    //         }
+    //         else 
+    //         {
+    //             throw new Error("Something went wrong")
+    //         }
+    //       }).then((data) => {
+    //         navigate("/Explore");
+    //     }).catch((error) => console.log(error));
+    // }
 
     return(
         <div className='LoginPageGridRightComponentLayout'>
