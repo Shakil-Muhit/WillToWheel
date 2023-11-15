@@ -10,6 +10,11 @@ class Post(models.Model):
     car_type= models.CharField(max_length=200)
     body= models.CharField(max_length=2000)
     is_reported= models.BooleanField(default=False)
+    post_img= models.ImageField(upload_to='PostImages',blank= True, null= True)
+
+class PostImage(models.Model):
+    post= models.ForeignKey(Post, on_delete=models.CASCADE, related_name= 'post_images')
+    post_img= models.ImageField(upload_to='PostImages',blank= True, null= True)
 
 
 class Comment(models.Model):
