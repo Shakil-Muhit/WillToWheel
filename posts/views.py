@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from .models import Post, Comment, Reply
 from .serializers import AddPostSerializer, AddCommentSerializer, AddReplySerializer, VoteSerializer
-from .serializers import PostSerializer, CommentSerializer, ReplySerializer
+from .serializers import PostSerializer, CommentSerializer, ReplySerializer, PostImageSerializer
 
 # Create your views here.
 class PostView(generics.CreateAPIView):
@@ -30,7 +30,8 @@ class AddPostView(generics.CreateAPIView):
         body= request.data.get('body')
         post_type= request.data.get('post_type')
         car_type= request.data.get('car_type')
-        post= Post(author= request.user, body= body, post_type=post_type, car_type=car_type)
+        post_img= request.data.get('post_img')
+        post= Post(author= request.user, body= body, post_type=post_type, car_type=car_type, post_img=post_img)
         post.save()
 
         return Response(PostSerializer(post).data, status= status.HTTP_201_CREATED)
@@ -68,6 +69,28 @@ class DeletePostView(generics.CreateAPIView):
 
             return Response({'message':'successfully deleted'}, status= status.HTTP_201_CREATED)
         return Response({'message':'successfully not deleted'}, status= status.HTTP_201_CREATED)
+    
+# class AddPostImageView(APIView):
+#     serializer_class= PostImageSerializer
+#     # @ensure_csrf_cookie
+#     def post(self, request, format= None):
+#         serializer= self.serializer_class(data= request.data)
+#         print(request.data)
+#         # if serializer.is_valid():
+#         # if not request.user.is_authenticated:
+#         #     return Response({'message':'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+#         postid= request.data.get('post_id')
+#         postList= Post.objects.filter(id=postid)
+#         if len(postList)>0 :
+#             post= postList[0]
+#             post_img= request.data.get('post_img')
+#             post
+#             currentuser= request.user
+#             profile= currentuser.profile
+#             profile.profile_img= profile_img
+#             profile.save(update_fields=['profile_img'])
+#             print(profile.profile_img)
+#         return Response(DPSerializer(profile).data, status= status.HTTP_201_CREATED)
 
 class AddCommentView(generics.CreateAPIView):
     serializer_class= AddCommentSerializer

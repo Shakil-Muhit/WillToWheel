@@ -1,11 +1,17 @@
 from rest_framework import serializers
 
-from .models import Post, Comment, Reply
+from .models import Post, Comment, Reply, PostImage
+
+class PostImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= PostImage
+        fields= ('id','post_img')
 
 class PostSerializer(serializers.ModelSerializer):
+    # post_images= PostImageSerializer(many=True)
     class Meta:
         model= Post
-        fields= ('id','author','body','is_reported','upvotes','downvotes')
+        fields= ('id','author','body','is_reported','upvotes','downvotes','post_img')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
