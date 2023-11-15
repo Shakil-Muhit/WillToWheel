@@ -3,6 +3,7 @@ import './styles/NavigationBar.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+var csrf2
 
 export default function NavigationBar() {
   return (
@@ -53,10 +54,48 @@ function SearchBar()
     )
 }
 
+
+
 function LogoutComponent(){
+    const navigate = useNavigate()
+    
+
+    const handleLogOut = () => {
+        const postRegisterData = {
+          method: "POST",
+          headers: {"Content-Type" : "application/json"},
+    
+          body: JSON.stringify({
+            
+          })
+        };
+    
+        fetch("http://127.0.0.1:8000/api/users/getcsrf").then((response) => {
+          console.log(response.status)
+          return response.json()}).then((data) => {
+              // setcsrf({csrf: data.value})
+              // console.log(allposts)
+              csrf2= data
+              fetch('http://127.0.0.1:8000/api/users/logout', {
+              method: 'POST',
+              mode: 'same-origin',
+              headers: {
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+                'X-CSRFToken': csrf2.value
+              },
+              body: {}
+            })
+            .then( res => console.log(res))
+            .catch(error => console.log(error))
+          })
+
+    //   fetch("/api/users/logout", postRegisterData).then((response) => response.json()).then((data) => {console.log(data);navigate("/")});     
+      }
+    
     return(
         <div>
-            <button>
+            <button onClick={handleLogOut}>
                 logout
             </button>
         </div>

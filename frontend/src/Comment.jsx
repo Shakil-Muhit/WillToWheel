@@ -3,28 +3,96 @@ import './styles/Comment.css'
 import { useState } from 'react'
 import bugatti from './bugatti.jpg'
 import Replies from './Replies'
+import { useEffect } from 'react'
 
-export default function Comment({profilepicture, username}) {
-    return (
+var csrf2
+
+export default function Comment({commentUserID, commentText, commentID}) {
+  const [commentUsername, setCommentUsername] = useState("")
+  const [commentProfilePicture, setCommentProfilePicture] = useState()
+
+  fetch("/api/users/getusername?id="+commentUserID).then((response) => {
+    console.log(response.status)
+    
+    return response.json()}).then((data) => {
+        // setAllFollowing([...allfollowing, data.following])
+        console.log(data)
+        console.log("/api/users/getuser?username="+data.name)
+        fetch("/api/users/getuser?username="+data.name).then((response) => {
+          console.log(response.status)
+          return response.json()}).then((data2) => {
+              // setAllFollowing([...allfollowing, data.following])
+              console.log(data2)
+              setCommentUsername(data2.username)
+              setCommentProfilePicture('http://127.0.0.1:8000/api/users' + data2.profile_img)
+          })
+    })
+
+    const [replyToComent, setReply] = useState("")
+  
+    const[allReplies, SetAllReplies] = useState([])
+
+    const [name, SetName] = useState("")
+    
+    useEffect(() => {
+    
+    console.log("abiaudaihd")
+    
+    fetch("/api/posts/getcommentreplies?" + "comment_id=" + commentID).then((response) => {
+      console.log(response.status)
+      return response.json()}).then((data) => {
+          SetAllReplies([...allReplies, data])
+          // console.log(allposts)
+      })
+}, [])
+  
+  if(!commentUsername)
+  {
+    return(
+      <div>
+
+      </div>
+    )
+  }  
+  else if(!allReplies){
+  return (
     <>
     <div className='CommentLayout'>
-      <CommentHeading profilepicture={profilepicture} username = {username}/>
-      <CommentText/>
-      <CommentInteractionTools/>
+      <CommentHeading profilepicture={commentProfilePicture} username = {commentUsername}/>
+      <CommentText commentText = {commentText}/>
+      <CommentInteractionTools commentUserID ={commentUserID} commentID={commentID}/>
     </div>
 
-    <div>
-        <Replies profilepicture={bugatti} username = {"doraemon"}/>
-    </div>
     </>
   )
+  }
+  else {
+    return (
+      <>
+      <div className='CommentLayout'>
+        <CommentHeading profilepicture={commentProfilePicture} username = {commentUsername}/>
+        <CommentText commentText = {commentText}/>
+        <CommentInteractionTools commentUserID = {commentUserID} commentID={commentID}/>
+      </div>
+  
+      {/* repliesID, commentID, repliesText, repliesUserID, repliesUsername */}
+  
+  {/* 'id', 'comment', 'body', 'author', 'authorname' */}
+      <div>
+      {allReplies[0].map((postdetails) => (
+                <Replies repliesID={postdetails.id} commentID={postdetails.comment} repliesText={postdetails.body} repliesUserID={postdetails.author} repliesUsername={postdetails.authorname}/>
+              ))}
+      </div>
+      </>
+    )
+    }
 
   function CommentHeading({profilepicture, username}){
     const [commentOptionButtonClicked, setCommentOptionButtonClicked] = useState(false);
     
     return(
       <div className='CommentHeadingLayout'>
-        <img src={profilepicture[0]} className = 'CommentProfilePictureMiniatureLayout'></img>
+        <img src={profilepicture} className = 'CommentProfilePictureMiniatureLayout'></img>
         <button className='CommentUsernameButtonLayout'><b>{username}</b></button>
         <button className='CommentOptionButtonLayout' onClick={() => setCommentOptionButtonClicked(!commentOptionButtonClicked)}> :: </button>
         <CommentOptionDropdownMenu commentOptionButtonClicked = {commentOptionButtonClicked}/>
@@ -43,21 +111,64 @@ export default function Comment({profilepicture, username}) {
     }
   }
 
-  function CommentText(){
+  function CommentText({commentText}){
     return(
         <div>
-            Bhai eitar daam komano jabe?
+            {commentText}
         </div>
     )
   }
 
-  function CommentInteractionTools(){
+  function CommentInteractionTools({commentUserID, commentID}){
     const [replyText, setReplyText] = useState("")
+
+    const handleReply = () => {
+      
+      console.log(commentID)
+      console.log(commentUserID)      
+
+      // const postData = {
+      //     method: "POST",
+      //     headers: {"Content-Type" : "application/json"},
+      
+      //     body: JSON.stringify({
+      //       comment_id: commentID,
+      //       body: replyText,
+      //     })
+      //   };
+        const uploadData = new FormData();
+        uploadData.append('comment_id', commentID);
+        uploadData.append('body', replyText);
+        
+        fetch("http://127.0.0.1:8000/api/users/getcsrf").then((response) => {
+          console.log(response.status)
+          return response.json()}).then((data) => {
+              // setcsrf({csrf: data.value})
+              // console.log(allposts)
+              csrf2= data
+              fetch('http://127.0.0.1:8000/api/posts/addreply', {
+              method: 'POST',
+              mode: 'same-origin',
+              headers: {
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+                'X-CSRFToken': csrf2.value
+              },
+              body: uploadData
+            })
+            .then( res => console.log(res))
+            .catch(error => console.log(error))
+          })
+
+        // fetch("/api/posts/addreply", postData).then((response) => response.json()).then((data) => console.log(data));
+      
+      }
+
     return(
       
       <div>
         <input className='CommentCommentBoxLayout' type='text' placeholder='Reply' onChange={e => setReplyText(e.target.value)}></input>
-        <button className='CommentCommentButtonLayout' onClick={() => console.log(replyText)}> <b> -&gt; </b></button>
+        <button className='CommentCommentButtonLayout' onClick={handleReply}> <b> -&gt; </b></button>
       </div>
     )
   }

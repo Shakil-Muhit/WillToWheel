@@ -1,23 +1,23 @@
 .MakePostLayout{
-    background-color: aqua;
+    background-color: whitesmoke;
     width: 900px;
-    height: 900px;
-    border-radius: 100px;
-    margin-left: 200px;
-    position: fixed;
-    display: grid;
+    height: 300px;
+    
+    margin-top: 150px;
+    background-color: aliceblue;
+    margin-left: 100px;
+    
 }
 
 .MakePostTextBoxLayout{
     width: 700px;
     height: 100px;
-    border: none;
     background-color: whites;
     margin-top: 20px;
     margin-left: 100px;
 }
 
-
+/* 
   img {
     padding: 0;
     margin: 0;
@@ -80,7 +80,7 @@
   
   .error span {
     color: red;
-  }
+  } */
 
   .MakePostPagePostButtonLayout{
     margin-left: 15px;
@@ -132,6 +132,7 @@
 
   .PostTypeChooseButtonLayout{
     margin-left: 15px;
+    margin-right: 20px;
     background-color: black;
     color: white;
     border-radius: 40px;

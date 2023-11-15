@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf.urls.static import static
+from django.conf import settings
 
 from . import views
 from .views import PostView, AddPostView, AddCommentView, AddReplyView
@@ -23,3 +25,5 @@ urlpatterns= [
     path("getpostcomments",GetPostComments.as_view(), name="post_comment"),
     path("getcommentreplies",GetCommentReplies.as_view(), name="comment_replies")
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

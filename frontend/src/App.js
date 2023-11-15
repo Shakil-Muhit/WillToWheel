@@ -11,6 +11,7 @@ import ProfilePage from './ProfilePage';
 import NotificationPage from './NotificationPage';
 import ChatPage from './ChatPage';
 import ConversationPage from './ConversationPage';
+import MakePost from './MakePost';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path = "/Notification" element = {<NotificationPage/>} />
         <Route path = "/Chat" element = {<ChatPage/>} />
         <Route path = "/Conversation" element = {<ConversationPage/>} />
+        <Route path = "/MakePost" element = {<MakePost/>} />
       </Routes>
 
     </BrowserRouter>

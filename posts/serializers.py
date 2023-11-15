@@ -11,7 +11,7 @@ class PostSerializer(serializers.ModelSerializer):
     # post_images= PostImageSerializer(many=True)
     class Meta:
         model= Post
-        fields= ('id','author','body','is_reported','upvotes','downvotes','post_img')
+        fields= ('id','author','body','is_reported','upvotes','downvotes','post_img','post_type','car_type')
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

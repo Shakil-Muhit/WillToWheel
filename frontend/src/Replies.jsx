@@ -1,13 +1,33 @@
 import React from 'react'
 import './styles/Replies.css'
 import { useState } from 'react'
+import chevrolet from './chevrolet.jpg'
+import { useEffect } from 'react'
 
-export default function Replies({profilepicture, username}) {
-    return (
+export default function Replies({repliesID, commentID, repliesText, repliesUserID, repliesUsername}) {
+  const [repliesProfilePicture, setRepliesProfilePicture] = useState()
+  
+  fetch("/api/users/getusername?id="+repliesUserID).then((response) => {
+    console.log(response.status)
+    return response.json()}).then((data) => {
+        // setAllFollowing([...allfollowing, data.following])
+        console.log(data)
+        console.log("/api/users/getuser?username="+data.name)
+        fetch("/api/users/getuser?username="+data.name).then((response) => {
+          console.log(response.status)
+          return response.json()}).then((data2) => {
+              // setAllFollowing([...allfollowing, data.following])
+              console.log(data2)
+              
+              setRepliesProfilePicture('http://127.0.0.1:8000/api/users' + data2.profile_img)
+          })
+    })
+  
+  return (
         <>
         <div className='RepliesLayout'>
-          <RepliesHeading profilepicture={profilepicture} username = {username}/>
-          <RepliesText/>
+          <RepliesHeading profilepicture={repliesProfilePicture} username = {repliesUsername}/>
+          <RepliesText repliesText={repliesText}/>
         </div>
         
         <div>
@@ -21,7 +41,7 @@ export default function Replies({profilepicture, username}) {
         
         return(
           <div className='RepliesHeadingLayout'>
-            <img src={profilepicture[0]} className = 'RepliesProfilePictureMiniatureLayout'></img>
+            <img src={profilepicture} className = 'RepliesProfilePictureMiniatureLayout'></img>
             <button className='RepliesUsernameButtonLayout'><b>{username}</b></button>
             <button className='RepliesOptionButtonLayout' onClick={() => setRepliesOptionButtonClicked(!repliesOptionButtonClicked)}> :: </button>
             <RepliesOptionDropdownMenu repliesOptionButtonClicked = {repliesOptionButtonClicked}/>
@@ -40,10 +60,10 @@ export default function Replies({profilepicture, username}) {
         }
       }
     
-      function RepliesText(){
+      function RepliesText({repliesText}){
         return(
             <div>
-                Mara Khan Apni
+                {repliesText}
             </div>
         )
       }

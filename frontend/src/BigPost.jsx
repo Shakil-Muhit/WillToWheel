@@ -3,13 +3,19 @@ import './styles/BigPost.css'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
-export default function BigPost({profilepicture, pictures, username, isExpanded}) {
+var csrf2
+
+export default function BigPost({postProfilePicture, postUsername,userID, postText, postID, postType, vehicleType, postImage}) {
+  console.log("big post")
+  console.log(postProfilePicture)
+  console.log(postImage)
+  
   return (
     <div className='BigPostLayout'>
-      <BigPostHeading profilepicture = {profilepicture} username = {username}/>
-      <BigPostImage pictures={pictures}/>
-      <BigPostText/>
-      <BigPostInteractionTools profilepicture={profilepicture} pictures={pictures} username={username} isExpanded={isExpanded}/>
+      <BigPostHeading profilepicture = {postProfilePicture} username = {postUsername}/>
+      <BigPostImage picture={postImage}/>
+      <BigPostText postText={postText}/>
+      <BigPostInteractionTools/>
     </div>
   )
 }
@@ -19,7 +25,7 @@ function BigPostHeading({profilepicture, username}){
   
   return(
     <div className='BigPostHeadingLayout'>
-      <img src={profilepicture[0]} className = 'BigProfilePictureMiniatureLayout'></img>
+      <img src={profilepicture} className = 'BigProfilePictureMiniatureLayout'></img>
       <button className='BigPostUsernameButtonLayout'><b>{username}</b></button>
       <button className='BigPostOptionButtonLayout' onClick={() => setpostOptionButtonClicked(!postOptionButtonClicked)}> :: </button>
       <BigPostOptionDropdownMenu postOptionButtonClicked = {postOptionButtonClicked}/>
@@ -39,53 +45,79 @@ function BigPostOptionDropdownMenu({postOptionButtonClicked}){
   }
 }
 
-function BigPostImage({pictures}){
-  const [pictureIndex, setPictureIndex] = useState(0)
+function BigPostImage({picture}){
+  // const [pictureIndex, setPictureIndex] = useState(0)
 
-  const [postVehiclePicture, setPostVehiclePicture] = useState(pictures[pictureIndex])
+  const [postVehiclePicture, setPostVehiclePicture] = useState('http://127.0.0.1:8000/api/posts' + picture)
   
 
-  function goToPrevPicture(){
-      if(pictureIndex > 0){
-        setPictureIndex(pictureIndex-1);
-      }
+  // function goToPrevPicture(){
+  //     if(pictureIndex > 0){
+  //       setPictureIndex(pictureIndex-1);
+  //     }
 
-      setPostVehiclePicture(pictures[pictureIndex]);
-  }
+  //     setPostVehiclePicture(pictures[pictureIndex]);
+  // }
 
-  function goToNextPicture(){
-    if(pictureIndex < pictures.length - 1){
-      setPictureIndex(pictureIndex+1);
-    }
+  // function goToNextPicture(){
+  //   if(pictureIndex < pictures.length - 1){
+  //     setPictureIndex(pictureIndex+1);
+  //   }
 
-    setPostVehiclePicture(pictures[pictureIndex]);
-  }
+  //   setPostVehiclePicture(pictures[pictureIndex]);
+  // }
 
   return(
     <div>
              <img src={postVehiclePicture} style={{maxWidth: '100%', marginTop: '20px', borderRadius: '40px'}}></img>
-             <button onClick={goToPrevPicture}> <b> &lt; </b></button>
-             <button onClick={goToNextPicture}> <b> &gt; </b></button>
+             <button onClick={console.log("goToPrevPicture")}> <b> &lt; </b></button>
+             <button onClick={console.log("goToNextPicture")}> <b> &gt; </b></button>
     </div>
   )
 }
 
-function BigPostText(){
+function BigPostText({postText}){
   return(
     <div>
-        <p style={{overflow: 'hidden'}}>It has 1 Diesel Engine and 1 Petrol Engine on offer. The Diesel engine is 1993 cc while the Petrol engine is 1496 cc . It is available with Automatic transmission.Depending upon the variant and fuel type the C-Class has a mileage of 23.0 kmpl</p>
+        <p style={{overflow: 'hidden'}}>{postText}</p>
     </div>
   )
 }
 
-function BigPostInteractionTools({profilepicture, pictures, username, isExpanded}){
+function BigPostInteractionTools(){
   const [commentText, setCommentText] = useState("");
+  function handleComment(){
+    const uploadData = new FormData();
+    uploadData.append('post_id', postID);
+    uploadData.append('body', commentText);
+    
+    // console.log(csrf2.value)
+    fetch("http://127.0.0.1:8000/api/users/getcsrf").then((response) => {
+      console.log(response.status)
+      return response.json()}).then((data) => {
+          // setcsrf({csrf: data.value})
+          // console.log(allposts)
+          csrf2= data
+          fetch('http://127.0.0.1:8000/api/posts/addcomment', {
+          method: 'POST',
+          mode: 'same-origin',
+          headers: {
+            // 'Accept': 'application/json',
+            // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+            'X-CSRFToken': csrf2.value
+          },
+          body: uploadData
+        })
+        .then( res => console.log(res))
+        .catch(error => console.log(error))
+      })
+  }
 
   return(
     
     <div>
       <input className='BigPostCommentBoxLayout' type='text' placeholder='Comment' onChange={e => setCommentText(e.target.value)}></input>
-      <button className='BigPostCommentButtonLayout' onClick = {() => console.log(commentText)}> <b> &gt; </b></button>
+      <button className='BigPostCommentButtonLayout' onClick = {handleComment}> <b> &gt; </b></button>
     </div>
   )
 }

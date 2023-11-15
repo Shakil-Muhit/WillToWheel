@@ -12,31 +12,70 @@ import chevrolet from './chevrolet.jpg'
 import { useState } from 'react'
 import MakePost from './MakePost'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 
 export default function ExplorePage() {
-  return (
-    <div className='ExplorePageLayout'>
-        <NavigationBar/>
-        
-        <div className='ExplorePageGridLayout'>
-          <ColumnBar/>
+  const [allposts, setAllPosts] = useState([])
+  // const[allfollowing, setAllFollowing] = useState([])
 
-          <Posts/>
-        </div>
-    </div>
-  )
+  useEffect(() => {
+      console.log("abiaudaihd")
+      fetch("/api/posts/allposts").then((response) => {
+        console.log(response.status)
+        return response.json()}).then((data) => {
+            setAllPosts([...allposts, data])
+            // console.log(allposts)
+        })
+
+      fetch("/api/users/getcurrentuser").then((response) => {
+        console.log(response.status)
+        return response.json()}).then((data) => {
+            setAllFollowing([...allfollowing, data.following])
+            console.log(data)
+        })
+  }, [])
+  if(allposts.length > 0)
+  {
+
+    return (
+      <div className='ExplorePageLayout'>
+          <NavigationBar/>
+          
+          <div className='ExplorePageGridLayout'>
+            <ColumnBar/>
+  
+            <Posts allposts={allposts}/>
+          </div>
+      </div>
+    )
+  }
+
+  else{
+    return(
+      <div className='ExplorePageLayout'>
+          <NavigationBar/>
+          
+          <div className='ExplorePageGridLayout'>
+            <ColumnBar/>
+          </div>
+      </div>
+    )
+  }
+  
 }
 
-function Posts(){
+function Posts({allposts}){
   const profilepicture = [aston]
   const picturearray = [merc, bugatti, ferrari]
+
+  // // username, postText, postType, vehicleType, postImage
+  // fields= ('id','author','body','is_reported','upvotes','downvotes','post_img')
   return(
     <div className='ExplorePagePostsGridLayout'>
-      <Post profilepicture = {profilepicture} pictures ={picturearray} username = {"doraemon"} isExpanded = {false}/>   
-      <Post profilepicture = {profilepicture} pictures ={picturearray} username = {"doraemon"} isExpanded = {false}/>   
-      <Post profilepicture = {profilepicture} pictures ={picturearray} username = {"doraemon"} isExpanded = {false}/>   
-      <Post profilepicture = {profilepicture} pictures ={picturearray} username = {"doraemon"} isExpanded = {false}/>   
+      {allposts[0].map((postdetails) => (
+              <Post userID = {postdetails.author} postText = {postdetails.body} postID = {postdetails.id} postType={postdetails.post_type} vehicleType={postdetails.car_type} postImage={postdetails.post_img}/>
+            ))}
     </div>
   )
 }
@@ -61,21 +100,11 @@ function ColumnBar() {
             *
           </button>
 
-          <button className='MakePostButtonLayout' onClick={() => setMakePostButtonClicked(!makePostButtonClicked)}>
+          <button className='MakePostButtonLayout' onClick={() => navigate("/MakePost")}>
             +
           </button>
-    
-          <MakePostHandleComponent makePostButtonClicked={makePostButtonClicked} setMakePostButtonClicked = {setMakePostButtonClicked}/>
     </div>
 
     
   )
-}
-
-function MakePostHandleComponent({makePostButtonClicked, setMakePostButtonClicked}){
-  if(makePostButtonClicked){
-    return(
-      <MakePost makePostButtonClicked = {makePostButtonClicked} setMakePostButtonClicked = {setMakePostButtonClicked}/>
-    )
-  }
 }
