@@ -5,9 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from .models import Post, Comment, Reply
+from .models import Post, Comment, Reply, Chat, ChatText
+from users.models import User
 from .serializers import AddPostSerializer, AddCommentSerializer, AddReplySerializer, VoteSerializer
-from .serializers import PostSerializer, CommentSerializer, ReplySerializer, PostImageSerializer
+from .serializers import PostSerializer, CommentSerializer, ReplySerializer, PostImageSerializer,AddChatTextSerializer
+from .serializers import ChatSerializer, ChatTextSerializer
 
 # Create your views here.
 class PostView(generics.CreateAPIView):
@@ -145,7 +147,72 @@ class AddReplyView(generics.CreateAPIView):
                 return Response(AddReplySerializer(reply).data, status= status.HTTP_201_CREATED)
             return Response({'message':'Comment does not exist'}, status= status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+
+class AddChatTextView(generics.CreateAPIView):
+    serializer_class= AddChatTextSerializer
+
+    def post(self, request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message': 'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        serializer= self.serializer_class(data= request.data)
+        if serializer.is_valid():
+            username1= request.user.username
+            username2= request.data.get('texter')
+            users1= User.objects.filter(username=username1)
+            users2= User.objects.filter(username=username2)
+            if len(users1)>0 and len(users2)>0 :
+                user1= users1[0]
+                user2= users2[0]
+                body= request.data.get('body')
+                
+                chats1= user1.chats.filter(texter=username2)
+                if len(chats1)>0 :
+                    chats2= user2.chats.filter(texter= username1)
+                    chat1= chats1[0]
+                    chat2= chats2[0]
+                    chat_text1= ChatText(chat=chat1, body=body)
+                    chat_text1.save()
+                    chat_text2= ChatText(chat=chat2, body=body)
+                    chat_text2.save()
+                    return Response(AddChatTextSerializer(chat_text1).data, status= status.HTTP_201_CREATED)
+                else :
+                    chat1= Chat(user=user1, texter= username2)
+                    chat_text1= ChatText(chat=chat1, body=body)
+                    chat_text1.save()
+                    chat2= Chat(user=user2, texter= username1)
+                    chat_text2= ChatText(chat=chat2, body=body)
+                    chat_text2.save()
+                    return Response(AddChatTextSerializer(chat_text1).data, status= status.HTTP_201_CREATED)
+
+                return Response({'message':'Chat added successfully'}, status= status.HTTP_201_CREATED)
+            return Response({'message':'Comment does not exist'}, status= status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+
+class GetCurrentUserChats(APIView):
+    serializer_class= ChatSerializer
+
+    def get(self, request, format=None):
+        if not request.user.is_authenticated:
+            return HttpResponse('Not logged in')
+        username= request.user.username
+        if username != None:
+            user= User.objects.filter(username=username)
+            if len(user)>0:
+                chats= Chat.objects.filter(user= user[0])
+                return Response(ChatSerializer(chats,many= True).data, status= status.HTTP_200_OK)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
     
+class GetChatTexts(APIView):    
+    def get(self, request, format=None):
+        chatid= request.GET.get('chat_id')
+        if chatid != None:
+            chat= Chat.objects.filter(id=chatid)
+            if len(chat)>0:
+                chat_texts= ChatText.objects.filter(chat=chat[0])
+                return Response(ChatTextSerializer(chat_texts,many= True).data, status= status.HTTP_200_OK)
+            return Response({'message': 'Post does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'message':'Invalid input'}, status= status.HTTP_400_BAD_REQUEST)
 
 class ReportPost(generics.CreateAPIView):
     serializer_class= VoteSerializer

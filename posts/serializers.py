@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Post, Comment, Reply, PostImage
+from .models import Post, Comment, Reply, PostImage, Chat, ChatText
 
 class PostImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,6 +23,16 @@ class ReplySerializer(serializers.ModelSerializer):
         model= Reply
         fields= ('id', 'comment', 'body', 'author', 'authorname')
 
+class ChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Chat
+        fields= ('id','texter')
+
+class ChatTextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= ChatText
+        fields= ('id','body')
+
 class AddPostSerializer(serializers.Serializer):
     body= serializers.CharField(max_length= 2000)
     post_type= serializers.CharField(max_length= 20)
@@ -32,6 +42,10 @@ class AddCommentSerializer(serializers.Serializer):
     body= serializers.CharField(max_length= 2000)
 
 class AddReplySerializer(serializers.Serializer):
+    body= serializers.CharField(max_length= 2000)
+
+class AddChatTextSerializer(serializers.Serializer):
+    texter= serializers.CharField(max_length= 200)
     body= serializers.CharField(max_length= 2000)
 
 class VoteSerializer(serializers.ModelSerializer):

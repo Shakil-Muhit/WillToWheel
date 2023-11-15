@@ -6,6 +6,7 @@ from . import views
 from .views import PostView, AddPostView, AddCommentView, AddReplyView
 from .views import GetPost, GetComment, GetReply, GetReportedPosts, GetReportedComments
 from .views import ReportPost, ReportComment ,UpdatePostView, DeleteCommentView, DeletePostView, GetPostComments, GetCommentReplies
+from .views import AddChatTextView, GetChatTexts, GetCurrentUserChats
 
 urlpatterns= [
     path("allposts",PostView.as_view(),name="posts"),
@@ -23,7 +24,10 @@ urlpatterns= [
     path("reportpost", ReportPost.as_view(), name="report_post"),
     path("reportcomment",ReportComment.as_view(), name="report_comment"),
     path("getpostcomments",GetPostComments.as_view(), name="post_comment"),
-    path("getcommentreplies",GetCommentReplies.as_view(), name="comment_replies")
+    path("getcommentreplies",GetCommentReplies.as_view(), name="comment_replies"),
+    path("getcurrentuserchats",GetCurrentUserChats.as_view(), name="get_current_user_chats"),
+    path("getchattexts",GetChatTexts.as_view(), name="chat_texts"),
+    path("addchattext",AddChatTextView.as_view(), name="add_chat_text")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

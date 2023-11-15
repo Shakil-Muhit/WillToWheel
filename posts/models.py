@@ -16,6 +16,13 @@ class PostImage(models.Model):
     post= models.ForeignKey(Post, on_delete=models.CASCADE, related_name= 'post_images')
     post_img= models.ImageField(upload_to='PostImages',blank= True, null= True)
 
+class Chat(models.Model):
+    user= models.ForeignKey(User, on_delete=models.CASCADE,related_name='chats')
+    texter= models.CharField(max_length= 30)
+
+class ChatText(models.Model):
+    chat= models.ForeignKey(Chat, on_delete=models.CASCADE,related_name='texts')
+    body= models.CharField(max_length=500)
 
 class Comment(models.Model):
     post= models.ForeignKey(Post, on_delete=models.CASCADE, related_name= 'comments')
