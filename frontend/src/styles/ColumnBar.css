@@ -1,0 +1,144 @@
+.ColumnBarLayout{
+    background-color: rgb(54, 69, 79);
+    height: 20vh;
+    width: 70px;
+    margin-left: 50px;
+    margin-bottom: 10px;
+    margin-top: 150px;
+    border-radius: 100px;
+    position: fixed;
+    padding-top: 60px;
+    padding-left: 20px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+
+    border: none;
+    box-shadow: 25px 25px 25px grey;
+    transition-property: box-shadow;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.ColumnBarLayout:hover{
+    box-shadow: 50px 50px 50px grey;
+}
+
+.SaleButtonLayout{
+    background-color: rgb(54, 69, 79);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    margin-bottom: 90px;
+}
+
+.SaleButtonLayout:hover{
+    font-weight: bolder;
+    text-shadow: .5px .5px .5px white;
+}
+
+.RentButtonLayout{
+    background-color: rgb(54, 69, 79);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.RentButtonLayout:hover{
+    font-weight: bolder;
+    text-shadow: .5px .5px .5px white;
+}
+
+.MakePostButtonLayout{
+    background-color: rgb(54, 69, 79);
+    height: 10v;
+    margin-top: 780px;
+    margin-left: 60px;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    border-radius: 100px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    font-size: 30px;
+    position: fixed;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+
+    box-shadow: 25px 25px 25px grey;
+    transition-property: box-shadow;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.MakePostButtonLayout:hover{
+    box-shadow: 50px 50px 50px grey;
+    font-weight: bolder;
+    text-shadow: .5px .5px .5px white;
+}
+
+.ViewNotificationButtonLayout{
+    background-color: rgb(54, 69, 79);
+    height: 10v;
+    margin-top: 630px;
+    margin-left: 60px;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    border-radius: 100px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    font-size: 30px;
+    position: fixed;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+
+    box-shadow: 25px 25px 25px grey;
+    transition-property: box-shadow;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.ViewNotificationButtonLayout:hover{
+    box-shadow: 50px 50px 50px grey;
+    font-weight: bolder;
+    text-shadow: .5px .5px .5px white;
+}
+
+.ViewChatButtonLayout{
+    background-color: rgb(54, 69, 79);
+    height: 10v;
+    margin-top: 480px;
+    margin-left: 60px;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    border-radius: 100px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    font-size: 30px;
+    position: fixed;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+
+    box-shadow: 25px 25px 25px grey;
+    transition-property: box-shadow;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.ViewChatButtonLayout:hover{
+    box-shadow: 50px 50px 50px grey;
+    font-weight: bolder;
+    text-shadow: .5px .5px .5px white;
+}

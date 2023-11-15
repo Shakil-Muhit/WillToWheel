@@ -1,0 +1,35 @@
+from rest_framework import serializers
+
+from .models import Post, Comment, Reply
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Post
+        fields= ('id','author','body','is_reported','upvotes','downvotes')
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Comment
+        fields= ('id','author','body')
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Reply
+        fields= ('id', 'comment', 'body', 'author', 'authorname')
+
+class AddPostSerializer(serializers.Serializer):
+    body= serializers.CharField(max_length= 2000)
+    post_type= serializers.CharField(max_length= 20)
+    car_type= serializers.CharField(max_length= 200)
+
+class AddCommentSerializer(serializers.Serializer):
+    body= serializers.CharField(max_length= 2000)
+
+class AddReplySerializer(serializers.Serializer):
+    body= serializers.CharField(max_length= 2000)
+
+class VoteSerializer(serializers.ModelSerializer):
+    id= serializers.IntegerField()
+    class Meta:
+        model= Post
+        fields= ('id',)

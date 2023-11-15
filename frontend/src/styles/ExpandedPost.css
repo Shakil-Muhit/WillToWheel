@@ -1,0 +1,17 @@
+.ExpandedPostLayout{
+    background-color: aliceblue;
+    height: 100vh;
+}
+
+.ExpandedPostGridLayout{
+    display: grid;
+    background-color: aliceblue;
+    grid-template-columns: 250px 1fr;
+}
+
+.ExpandedPostPostsGridLayout{
+    display: grid;
+    margin-top: 150px;
+    background-color: aliceblue;
+    grid-template-columns: 1fr 1fr;
+}

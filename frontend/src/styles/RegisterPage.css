@@ -1,0 +1,121 @@
+.RegisterPageGridLayout{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.RegisterPageGridLeftComponentLayout{
+    background-color: aliceblue;
+    height: 100vh;
+    color: white;
+}
+
+.RegisterPageGridRightComponentLayout{
+    background-color: aliceblue;
+    color: black;
+    height: 100vh;
+}
+
+.RegisterPageMessegeCardLayout{
+    background-color: rgb(54, 69, 79);
+    padding-left: 150px;
+    padding-top: 100px;
+    padding-bottom: 150px;
+    padding-right: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 150px;
+    margin-bottom: 200px;
+
+    border-radius: 100px;
+    border: none;
+    box-shadow: 25px 25px 25px grey;
+    transition-property: box-shadow;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.RegisterPageMessegeCardLayout:hover{
+    box-shadow: 50px 50px 50px grey;
+}
+
+.RegisterPageRegisterCardLayout{
+    background-color: rgb(255, 255, 255);
+    padding-left: 150px;
+    padding-top: 120px;
+    padding-bottom: 200px;
+    padding-right: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 150px;
+    margin-bottom: 200px;
+
+    border-radius: 100px;
+    border: none;
+    box-shadow: 25px 25px 25px grey;
+    transition-property: box-shadow;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.RegisterPageRegisterCardLayout:hover{
+    box-shadow: 50px 50px 50px grey;
+}
+
+.RegisterPageLoginButtonLayout{
+    background-color: steelblue;
+    color: white;
+    border-radius: 40px;
+    border: none;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    margin-left: 40px;
+    transition-property: box-shadow, background-color;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.RegisterPageLoginButtonLayout:hover{
+    box-shadow: 5px 5px 5px rgb(52, 52, 52);
+    background-color: lightskyblue;
+}
+
+.RegisterPageRegisterButtonLayout{
+    background-color: rgb(25, 25, 112);
+    color: white;
+    border-radius: 40px;
+    border: none;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    margin-left: 380px;
+    margin-top: 10px;
+    transition-property: box-shadow, background-color;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.RegisterPageRegisterButtonLayout:hover{
+    box-shadow: 5px 5px 5px rgb(52, 52, 52);
+    background-color: rgb(115, 147, 179);
+}
+
+.RegisterPageUsernameBoxLayout{
+    border-radius: 100px;
+    border-color: 	rgb(53, 57, 53);
+    padding-right: 250px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.RegisterPagePasswordBoxLayout{
+    border-radius: 100px;
+    border-color: 	rgb(53, 57, 53);
+    padding-right: 250px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}

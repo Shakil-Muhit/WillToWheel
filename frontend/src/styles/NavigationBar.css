@@ -1,0 +1,114 @@
+.TopNavigationLayout{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: fixed;
+}
+
+.NavigationBarLayout{
+    background-color: rgb(54, 69, 79);
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 40px;
+    margin-bottom: 20px;
+    padding-top: 30px;
+    padding-left: 200px;
+    padding-right: 300px;
+    padding-bottom: 30px;
+    height: 20px;
+    color: white;
+    border-radius: 30px;
+    border: none;
+    box-shadow: 25px 25px 25px grey;
+    transition-property: box-shadow;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.NavigationBarLayout:hover{
+    box-shadow: 50px 50px 50px grey;
+}
+
+.NavigationBarExploreButton{
+    background-color: rgb(54, 69, 79);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.NavigationBarExploreButton:hover{
+    font-weight: bolder;
+    text-shadow: .5px .5px .5px white;
+}
+
+.NavigationBarMyWheelsButton{
+    background-color: rgb(54, 69, 79);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 250px;
+}
+
+.NavigationBarMyWheelsButton:hover{
+    font-weight: bolder;
+    text-shadow: .5px .5px .5px white;
+}
+
+.NavigationBarProfileButton{
+    background-color: rgb(54, 69, 79);
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 250px;
+}
+
+.NavigationBarProfileButton:hover{
+    font-weight: bolder;
+    text-shadow: .5px .5px .5px white;
+}
+
+.SearchBarLayout{
+    background-color: rgb(54, 69, 79);
+    margin-top: 30px;
+    margin-right: 100px;
+    border: none;
+    border-radius: 100px;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    box-shadow: 25px 25px 25px grey;
+    transition-property: box-shadow;
+    transition-duration: .25s;
+    transition-timing-function: ease-in;
+}
+
+.SearchBarLayout:hover{
+    box-shadow: 50px 50px 50px grey;
+}
+
+.SearchTextBoxLayout{
+    border-radius: 100px;
+    border-color:  rgb(54, 69, 79);
+    padding-right: 50px;
+    padding-top: 10px;
+    margin-right: 10px;
+    border: none;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.SearchButtonLayout{
+    background-color: steelblue;
+    border: none;
+    color: white;
+    border-radius: 40px;
+}
+
+.SearchButtonLayout:hover{
+    box-shadow: 5px 5px 5px rgb(52, 52, 52);
+    background-color: lightskyblue;
+}
