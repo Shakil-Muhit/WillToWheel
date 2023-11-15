@@ -31,7 +31,7 @@ class ChatSerializer(serializers.ModelSerializer):
 class ChatTextSerializer(serializers.ModelSerializer):
     class Meta:
         model= ChatText
-        fields= ('id','body')
+        fields= ('id','body','person')
 
 class AddPostSerializer(serializers.Serializer):
     body= serializers.CharField(max_length= 2000)
@@ -45,7 +45,7 @@ class AddReplySerializer(serializers.Serializer):
     body= serializers.CharField(max_length= 2000)
 
 class AddChatTextSerializer(serializers.Serializer):
-    texter= serializers.CharField(max_length= 200)
+    # texter= serializers.CharField(max_length= 200)
     body= serializers.CharField(max_length= 2000)
 
 class VoteSerializer(serializers.ModelSerializer):

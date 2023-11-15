@@ -12,21 +12,45 @@ import chevrolet from './chevrolet.jpg'
 import { useState } from 'react'
 import MakePost from './MakePost'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 
 export default function ChatPage() {
+  const [allChats, setAllChats] = useState([])
+  // const[allfollowing, setAllFollowing] = useState([])
+
+  useEffect(() => {
+      console.log("abiaudaihd")
+      fetch("/api/posts/getcurrentuserchats").then((response) => {
+        console.log(response.status)
+        return response.json()}).then((data) => {
+            setAllChats([...allChats, data])
+            // console.log(allposts)
+        })
+  }, [])
+
+  if(allChats.length > 0){
   return (
     <div className='ChatPageLayout'>
         <NavigationBar/>
         
         <div className='ChatPageGridLayout'>
-            <Chats/>
+            <Chats allChats={allChats}/>
         </div>
     </div>
   )
+  }
+  else{
+    return(
+      <div className='ChatPageLayout'>
+        <NavigationBar/>
+        
+    </div>
+    )
+  }
 }
 
-function Chats(){
+function Chats({allChats}){
   const profilepicture = [aston]
   const picturearray = [merc, bugatti, ferrari]
 
@@ -36,19 +60,29 @@ function Chats(){
           Chats
         </div>
 
-        <ChatComponent username={"doraemon"}/>
+        {allChats[0].map((postdetails) => (
+              <ChatComponent  chatID = {postdetails.id} chatTexter={postdetails.texter} />
+            ))}
     </div>
   )
 }
 
-function ChatComponent({username}){
+
+
+function ChatComponent({chatID, chatTexter}){
   const navigate = useNavigate()
+
+  const username = chatTexter
+
+  function handleChat(){
+    navigate("/Conversation", {state:{username, chatID}})
+  }
 
   return(
     <div className='ChatComponentLayout'>
-        <button className='ChatComponentUsernameButtonLayout' onClick={() => navigate("/Conversation")}>
+        <button className='ChatComponentUsernameButtonLayout' onClick={handleChat}>
             <div>
-              {username}
+              {chatTexter}
             </div>
         </button>
     </div>

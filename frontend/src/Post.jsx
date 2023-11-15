@@ -40,7 +40,7 @@ export default function Post({userID, postText, postID, postType, vehicleType, p
     // {userID, postText, postID, postType, vehicleType, postImage}
   return (
     <div className='PostLayout'>
-      <PostHeading profilepicture = {postProfilePicture} username = {postUsername}/>
+      <PostHeading profilepicture = {postProfilePicture} username = {postUsername} userID={userID}/>
       <PostImage picture={postImage}/>
       <PostText postText = {postText}/>
       <PostInteractionTools postProfilePicture = {postProfilePicture} postUsername = {postUsername} userID={userID} postText={postText} postID={postID} postType={postType} vehicleType={vehicleType} postImage={postImage}/>
@@ -49,13 +49,19 @@ export default function Post({userID, postText, postID, postType, vehicleType, p
   }
 }
 
-function PostHeading({profilepicture, username}){
+function PostHeading({profilepicture, username, userID}){
   const [postOptionButtonClicked, setpostOptionButtonClicked] = useState(false);
-  
+  const navigate = useNavigate()
+
+  function goToOtherProfile(){
+    navigate("/OtherProfile", {state:{username, userID}})
+     
+  }
+
   return(
     <div className='PostHeadingLayout'>
       <img src={profilepicture} className = 'ProfilePictureMiniatureLayout'></img>
-      <button className='PostUsernameButtonLayout'><b>{username}</b></button>
+      <button className='PostUsernameButtonLayout' onClick={goToOtherProfile}><b>{username}</b></button>
       <button className='PostOptionButtonLayout' onClick={() => setpostOptionButtonClicked(!postOptionButtonClicked)}> :: </button>
       <PostOptionDropdownMenu postOptionButtonClicked = {postOptionButtonClicked}/>
     </div>

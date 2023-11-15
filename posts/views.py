@@ -148,6 +148,37 @@ class AddReplyView(generics.CreateAPIView):
             return Response({'message':'Comment does not exist'}, status= status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
 
+class GetChat(APIView):
+    serializer_class= ChatSerializer
+
+    def get(self, request, format=None):
+        if not request.user.is_authenticated:
+            return HttpResponse('Not logged in')
+        username= request.user.username
+        if username != None:
+            user= User.objects.filter(username=username)
+            if len(user)>0:
+                chats= Chat.objects.filter(user= user[0])
+                username1= request.user.username
+                username2= request.GET.get('texter')
+                if username2 != None:
+                    user2= User.objects.filter(username=username2)
+                    filtered_chat= chats.filter(texter=username2)
+                    print(username1)
+                    print("PROBLEM "+username2)
+                    if len(filtered_chat) > 0:
+                        return Response(ChatSerializer(filtered_chat[0]).data, status= status.HTTP_200_OK)
+                    else:
+                        chat1= Chat(user=user[0], texter= username2)
+                        chat1.save()
+                        chat2= Chat(user=user2[0], texter= username1)
+                        chat2.save()
+                        
+                        return Response(ChatSerializer(chat1).data, status= status.HTTP_200_OK)
+                return Response({'Message': 'No texter'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+
 class AddChatTextView(generics.CreateAPIView):
     serializer_class= AddChatTextSerializer
 
@@ -160,6 +191,8 @@ class AddChatTextView(generics.CreateAPIView):
             username2= request.data.get('texter')
             users1= User.objects.filter(username=username1)
             users2= User.objects.filter(username=username2)
+            print("USER1: "+username1)
+            print("USER 2:"+username2)
             if len(users1)>0 and len(users2)>0 :
                 user1= users1[0]
                 user2= users2[0]
@@ -170,22 +203,24 @@ class AddChatTextView(generics.CreateAPIView):
                     chats2= user2.chats.filter(texter= username1)
                     chat1= chats1[0]
                     chat2= chats2[0]
-                    chat_text1= ChatText(chat=chat1, body=body)
+                    chat_text1= ChatText(chat=chat1, body=body, person=1)
                     chat_text1.save()
-                    chat_text2= ChatText(chat=chat2, body=body)
+                    chat_text2= ChatText(chat=chat2, body=body, person=2)
                     chat_text2.save()
                     return Response(AddChatTextSerializer(chat_text1).data, status= status.HTTP_201_CREATED)
                 else :
                     chat1= Chat(user=user1, texter= username2)
-                    chat_text1= ChatText(chat=chat1, body=body)
+                    chat1.save()
+                    chat_text1= ChatText(chat=chat1, body=body, person=1)
                     chat_text1.save()
                     chat2= Chat(user=user2, texter= username1)
-                    chat_text2= ChatText(chat=chat2, body=body)
+                    chat2.save()
+                    chat_text2= ChatText(chat=chat2, body=body, person=2)
                     chat_text2.save()
                     return Response(AddChatTextSerializer(chat_text1).data, status= status.HTTP_201_CREATED)
 
                 return Response({'message':'Chat added successfully'}, status= status.HTTP_201_CREATED)
-            return Response({'message':'Comment does not exist'}, status= status.HTTP_400_BAD_REQUEST)
+            return Response({'message':'Comment does not exist'}, status= status.HTTP_501_NOT_IMPLEMENTED)
         return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
 
 class GetCurrentUserChats(APIView):

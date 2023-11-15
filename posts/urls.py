@@ -6,7 +6,7 @@ from . import views
 from .views import PostView, AddPostView, AddCommentView, AddReplyView
 from .views import GetPost, GetComment, GetReply, GetReportedPosts, GetReportedComments
 from .views import ReportPost, ReportComment ,UpdatePostView, DeleteCommentView, DeletePostView, GetPostComments, GetCommentReplies
-from .views import AddChatTextView, GetChatTexts, GetCurrentUserChats
+from .views import AddChatTextView, GetChatTexts, GetCurrentUserChats, GetChat
 
 urlpatterns= [
     path("allposts",PostView.as_view(),name="posts"),
@@ -27,6 +27,7 @@ urlpatterns= [
     path("getcommentreplies",GetCommentReplies.as_view(), name="comment_replies"),
     path("getcurrentuserchats",GetCurrentUserChats.as_view(), name="get_current_user_chats"),
     path("getchattexts",GetChatTexts.as_view(), name="chat_texts"),
+    path("getchat",GetChat.as_view(), name="get_chat"),
     path("addchattext",AddChatTextView.as_view(), name="add_chat_text")
 ]
 

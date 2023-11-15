@@ -23,6 +23,7 @@ class Chat(models.Model):
 class ChatText(models.Model):
     chat= models.ForeignKey(Chat, on_delete=models.CASCADE,related_name='texts')
     body= models.CharField(max_length=500)
+    person= models.IntegerField()
 
 class Comment(models.Model):
     post= models.ForeignKey(Post, on_delete=models.CASCADE, related_name= 'comments')
