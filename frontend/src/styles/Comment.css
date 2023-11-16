@@ -28,7 +28,7 @@
 
 .CommentUsernameButtonLayout{
     background-color: rgb(255, 255, 255);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     margin-left: 10px;
     border: none;
 }
@@ -50,7 +50,7 @@
 }
 
 .CommentCommentButtonLayout{
-    margin-left: 15px;
+    margin-left: 200px;
     background-color: black;
     color: white;
     border-radius: 40px;
@@ -82,11 +82,11 @@
 
 .CommentHeadingLayout{
     background-color: white;
-    height: 80px;
+    height: 40px;
 }
 
 .CommentOptionButtonLayout{
-    margin-left: 15px;
+    margin-left: 200px;
     background-color: white;
     color: black;
     border-radius: 40px;
@@ -108,8 +108,9 @@
 }
 
 .CommentOptionDropDownMenuLayout{
-    background-color: antiquewhite;
-    display:table
+    background-color: transparent;
+    display:grid;
+    position: fixed;
 }
 
 .CommentOptionButtonLayout{

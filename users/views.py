@@ -200,6 +200,7 @@ class GetUsersBySearch(APIView):
         search_string= request.GET.get('search_string')
         if search_string != None:
             users= Profile.objects.filter(username__icontains=search_string)
+            print("KOTO "+str(len(users)))
             return Response(ProfileSerializer(users,many= True).data, status= status.HTTP_200_OK)
             # return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)

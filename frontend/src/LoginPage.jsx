@@ -58,7 +58,7 @@ function LogoutComponent(){
     
     return(
         <div>
-            <button style={{marginTop: "600px", backgroundColor: "black", color: "white"}} onClick={handleLogOut}>
+            <button style={{ backgroundColor: "black", color: "white"}} onClick={handleLogOut}>
                 logout
             </button>
         </div>

@@ -42,7 +42,7 @@ export default function Post({userID, postText, postID, postType, vehicleType, p
     <div className='PostLayout'>
       <PostHeading profilepicture = {postProfilePicture} username = {postUsername} userID={userID}/>
       <PostImage picture={postImage}/>
-      <PostText postText = {postText}/>
+      <PostText postText = {postText} postUsername={postUsername}/>
       <PostInteractionTools postProfilePicture = {postProfilePicture} postUsername = {postUsername} userID={userID} postText={postText} postID={postID} postType={postType} vehicleType={vehicleType} postImage={postImage}/>
     </div>
   )
@@ -105,16 +105,17 @@ function PostImage({picture}){
   return(
     <div>
              <img src={postVehiclePicture} style={{maxWidth: '100%', marginTop: '20px', borderRadius: '40px'}}></img>
-             <button onClick={console.log("goToPrevPicture")}> <b> &lt; </b></button>
-             <button onClick={console.log("goToNextPicture")}> <b> &gt; </b></button>
+             <button className="PrevPicButtonLayout" onClick={console.log("goToPrevPicture")}> <b> &lt; </b></button>
+             <button className='NextPicButtonLayout'  onClick={console.log("goToNextPicture")}> <b> &gt; </b></button>
     </div>
   )
 }
 
-function PostText({postText}){
+function PostText({postText, postUsername}){
   return(
     <div>
-        <p style={{overflow: 'hidden'}}>{postText}</p>
+        <p style={{overflow: 'hidden'}}><b>{postUsername}</b></p>
+        <p>{postText}</p>
     </div>
   )
 }
