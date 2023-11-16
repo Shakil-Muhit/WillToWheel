@@ -12,9 +12,24 @@ import chevrolet from './chevrolet.jpg'
 import { useState } from 'react'
 import MakePost from './MakePost'
 import './styles/FollowingPage.css'
-
+import { useEffect } from 'react'
 
 export default function FollowingPage() {
+  const [allposts, setAllPosts] = useState([])
+  // const[allfollowing, setAllFollowing] = useState([])
+
+  useEffect(() => {
+      console.log("abiaudaihd")
+      fetch("/api/users/getcommunityposts").then((response) => {
+        console.log(response.status)
+        return response.json()}).then((data) => {
+            setAllPosts([...allposts, data])
+            // console.log(allposts)
+        })
+
+  }, [])
+
+  if(allposts.length > 0){
   return (
     <div className='FollowingPageLayout'>
         <NavigationBar/>
@@ -22,19 +37,33 @@ export default function FollowingPage() {
         <div className='FollowingPageGridLayout'>
           <ColumnBar/>
 
-          <Posts/>
+          <Posts allposts={allposts}/>
         </div>
     </div>
   )
 }
+else{
+  return(
+    <div className='FollowingPageLayout'>
+        <NavigationBar/>
+        
+        <div className='FollowingPageGridLayout'>
+          <ColumnBar/>
+        </div>
+    </div>
+  )
+}
+}
 
-function Posts(){
+
+function Posts({allposts}){
   const profilepicture = [aston]
   const picturearray = [merc, bugatti, ferrari]
   return(
     <div className='FollowingPagePostsGridLayout'>
-      <Post profilepicture = {profilepicture} pictures ={picturearray} username = {"doraemon"} isExpanded = {false}/>  
-      <Post profilepicture = {profilepicture} pictures ={picturearray} username = {"doraemon"} isExpanded = {false}/>   
+      {allposts[0].map((postdetails) => (
+              <Post userID = {postdetails.author} postText = {postdetails.body} postID = {postdetails.id} postType={postdetails.post_type} vehicleType={postdetails.car_type} postImage={postdetails.post_img}/>
+            ))}
     </div>
   )
 }

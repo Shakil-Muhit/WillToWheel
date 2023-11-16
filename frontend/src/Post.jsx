@@ -149,6 +149,43 @@ function PostInteractionTools({postProfilePicture, postUsername, userID, postTex
         .then( res => console.log(res))
         .catch(error => console.log(error))
       })
+
+
+      const uploadData2 = new FormData();
+      uploadData2.append('post_id', postID);
+      uploadData2.append('receiver_name', postUsername);
+      uploadData2.append('notification_type', 1);
+
+      fetch("http://127.0.0.1:8000/api/users/getcsrf").then((response) => {
+        console.log(response.status)
+        return response.json()}).then((data) => {
+            // setcsrf({csrf: data.value})
+            // console.log(allposts)
+            csrf2= data
+            fetch('http://127.0.0.1:8000/api/posts/addnotification', {
+            method: 'POST',
+            mode: 'same-origin',
+            headers: {
+              // 'Accept': 'application/json',
+              // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+              'X-CSRFToken': csrf2.value
+            },
+            body: uploadData2
+          }).then( res2 => console.log(res2))
+          .catch(error2 => console.log(error2))
+        })
+      
+    //   fetch('http://127.0.0.1:8000/api/posts/addnotification', {
+    //   method: 'POST',
+    //   mode: 'same-origin',
+    //   headers: {
+    //     // 'Accept': 'application/json',
+    //     // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+    //     'X-CSRFToken': csrf2.value
+    //   },
+    //   body: uploadData2
+    // }).then( res2 => console.log(res2))
+    // .catch(error2 => console.log(error2))
   }
 
   return(

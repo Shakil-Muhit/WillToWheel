@@ -158,11 +158,11 @@ class AddNotificationView(generics.CreateAPIView):
         if serializer.is_valid():
             post_id= request.data.get('post_id')
             username2= request.data.get('receiver_name')
-            notification_type= request.user.get('notification_type')
+            notification_type= request.data.get('notification_type')
             # commentList= Comment.objects.filter(id=commentid)
             users2= User.objects.filter(username= username2)
             username1= request.user.username
-            notification= Notification(user=users2[0],notification_type=notification_type,post_id=post_id,notifier= username1)
+            notification= Notification(user=users2[0],notification_type=notification_type,post_id=post_id,notifier= username1,read_status=0)
             notification.save()
             return Response(NotificationSerializer(notification).data, status= status.HTTP_200_OK)
         return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)

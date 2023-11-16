@@ -137,16 +137,6 @@ function FollowAndChatButtons({flag, username}){
         return response.json()}).then((data) => {
             // setAllFollowing([...allfollowing, data.following])
             console.log(data)
-            // console.log("/api/users/getuser?username="+data.name)
-            // fetch("/api/users/getuser?username="+data.name).then((response) => {
-            //   console.log(response.status)
-            //   return response.json()}).then((data2) => {
-            //       // setAllFollowing([...allfollowing, data.following])
-            //       console.log(data2)
-            //       setPostUsername(data2.username)
-            //       setPostProfilePicture('http://127.0.0.1:8000/api/users' + data2.profile_img)
-            //   })
-            // if(response.status!=400){
               console.log("global username " + globalusername)
               const chatID= data.id
               navigate("/Conversation", {state:{username, chatID}})
@@ -155,10 +145,56 @@ function FollowAndChatButtons({flag, username}){
       
     }
 
+    function handleFollow(){
+      var csrf2
+      const uploadData = new FormData();
+      uploadData.append('username', username);
+        
+        // console.log(csrf2.value)
+        fetch("http://127.0.0.1:8000/api/users/getcsrf").then((response) => {
+          console.log(response.status)
+          return response.json()}).then((data) => {
+              csrf2= data
+              fetch('http://127.0.0.1:8000/api/users/followuser', {
+              method: 'POST',
+              mode: 'same-origin',
+              headers: {
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+                'X-CSRFToken': csrf2.value
+              },
+              body: uploadData
+            })
+            .then( res => {
+              const uploadData2 = new FormData();
+              uploadData2.append('post_id', 1);
+              uploadData2.append('receiver_name', username);
+              uploadData2.append('notification_type', 3);
+              
+              fetch('http://127.0.0.1:8000/api/posts/addnotification', {
+              method: 'POST',
+              mode: 'same-origin',
+              headers: {
+                // 'Accept': 'application/json',
+                // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+                'X-CSRFToken': csrf2.value
+              },
+              body: uploadData2
+            }).then( res2 => console.log(res2))
+            .catch(error2 => console.log(error2))
+              
+
+              console.log(res)
+          })
+            .catch(error => console.log(error))
+          })
+
+    }
+
     if(!flag){
         return(
             <div style={{marginLeft: "230px"}}>
-                <button className='ProfileInteractionButtonsLayout'>Follow</button>
+                <button className='ProfileInteractionButtonsLayout' onClick={handleFollow}>Follow</button>
                 <button className='ProfileInteractionButtonsLayout' onClick={handleSend}>Send a Message</button>
             </div>
         )

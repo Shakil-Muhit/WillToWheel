@@ -39,8 +39,8 @@ export default function ExpandedPost({postProfilePicture, postUsername, userID, 
           <ColumnBar/>
           {/* postProfilePicture, postUsername,userID, postText, postID, postType, vehicleType, postImage */}
           <div className='ExpandedPostPostsGridLayout'>
-          <BigPost postProfilePicture = {location.state.postProfilePicture} postUsername ={location.state.postUsername} userID = {location.state.userID} postText={location.state.postText} postID = {postID} postType={location.state.postType} vehicleType ={location.state.vehicleType} postImage = {location.state.postImage}/> 
-          <CommentsSection allComments= {allComments}/>
+          <BigPost postProfilePicture = {location.state.postProfilePicture} postUsername ={location.state.postUsername} userID = {location.state.userID} postText={location.state.postText} postID = {location.state.postID} postType={location.state.postType} vehicleType ={location.state.vehicleType} postImage = {location.state.postImage}/> 
+          <CommentsSection allComments= {allComments} postID={location.state.postID} postUsername ={location.state.postUsername}/>
           </div> 
 
           <div>
@@ -75,11 +75,11 @@ export default function ExpandedPost({postProfilePicture, postUsername, userID, 
     }
 }
 
-function CommentsSection({allComments}){
+function CommentsSection({allComments, postID, postUsername}){
   return(
     <div>
           {allComments[0].map((postdetails) => (
-              <Comment commentUserID = {postdetails.author} commentText = {postdetails.body} commentID = {postdetails.id}/>
+              <Comment commentUserID = {postdetails.author} commentText = {postdetails.body} commentID = {postdetails.id} postID ={postID} postUsername={postUsername}/>
             ))}
     </div>
   )

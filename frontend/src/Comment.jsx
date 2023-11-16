@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 
 var csrf2
 
-export default function Comment({commentUserID, commentText, commentID}) {
+export default function Comment({commentUserID, commentText, commentID, postID, postUsername}) {
   const [commentUsername, setCommentUsername] = useState("")
   const [commentProfilePicture, setCommentProfilePicture] = useState()
 
@@ -60,7 +60,7 @@ export default function Comment({commentUserID, commentText, commentID}) {
     <div className='CommentLayout'>
       <CommentHeading profilepicture={commentProfilePicture} username = {commentUsername}/>
       <CommentText commentText = {commentText}/>
-      <CommentInteractionTools commentUserID ={commentUserID} commentID={commentID}/>
+      <CommentInteractionTools commentUserID ={commentUserID} commentID={commentID} postID={postID} postUsername={postUsername} commentUsername = {commentUsername}/>
     </div>
 
     </>
@@ -72,7 +72,7 @@ export default function Comment({commentUserID, commentText, commentID}) {
       <div className='CommentLayout'>
         <CommentHeading profilepicture={commentProfilePicture} username = {commentUsername}/>
         <CommentText commentText = {commentText}/>
-        <CommentInteractionTools commentUserID = {commentUserID} commentID={commentID}/>
+        <CommentInteractionTools commentUserID = {commentUserID} commentID={commentID} postID={postID} postUsername={postUsername} commentUsername = {commentUsername}/>
       </div>
   
       {/* repliesID, commentID, repliesText, repliesUserID, repliesUsername */}
@@ -119,7 +119,7 @@ export default function Comment({commentUserID, commentText, commentID}) {
     )
   }
 
-  function CommentInteractionTools({commentUserID, commentID}){
+  function CommentInteractionTools({commentUserID, commentID, postID, postUsername, commentUsername}){
     const [replyText, setReplyText] = useState("")
 
     const handleReply = () => {
@@ -159,6 +159,30 @@ export default function Comment({commentUserID, commentText, commentID}) {
             .then( res => console.log(res))
             .catch(error => console.log(error))
           })
+
+          const uploadData2 = new FormData();
+          uploadData2.append('post_id', postID);
+          uploadData2.append('receiver_name', commentUsername);
+          uploadData2.append('notification_type', 2);
+          console.log("COMMENTUSERNAME "+commentUsername)
+          fetch("http://127.0.0.1:8000/api/users/getcsrf").then((response) => {
+            console.log(response.status)
+            return response.json()}).then((data) => {
+                // setcsrf({csrf: data.value})
+                // console.log(allposts)
+                csrf2= data
+                fetch('http://127.0.0.1:8000/api/posts/addnotification', {
+                method: 'POST',
+                mode: 'same-origin',
+                headers: {
+                  // 'Accept': 'application/json',
+                  // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+                  'X-CSRFToken': csrf2.value
+                },
+                body: uploadData2
+              }).then( res2 => console.log(res2))
+              .catch(error2 => console.log(error2))
+            })
 
         // fetch("/api/posts/addreply", postData).then((response) => response.json()).then((data) => console.log(data));
       
