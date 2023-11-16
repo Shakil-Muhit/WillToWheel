@@ -5,11 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from .models import Post, Comment, Reply, Chat, ChatText
+from .models import Post, Comment, Reply, Chat, ChatText, Notification
 from users.models import User
 from .serializers import AddPostSerializer, AddCommentSerializer, AddReplySerializer, VoteSerializer
 from .serializers import PostSerializer, CommentSerializer, ReplySerializer, PostImageSerializer,AddChatTextSerializer
-from .serializers import ChatSerializer, ChatTextSerializer
+from .serializers import ChatSerializer, ChatTextSerializer, NotificationSerializer, AddNotificationSerializer
 
 # Create your views here.
 class PostView(generics.CreateAPIView):
@@ -147,6 +147,25 @@ class AddReplyView(generics.CreateAPIView):
                 return Response(AddReplySerializer(reply).data, status= status.HTTP_201_CREATED)
             return Response({'message':'Comment does not exist'}, status= status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class AddNotificationView(generics.CreateAPIView):
+    serializer_class= AddNotificationSerializer
+
+    def post(self, request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message': 'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        serializer= self.serializer_class(data= request.data)
+        if serializer.is_valid():
+            post_id= request.data.get('post_id')
+            username2= request.data.get('receiver_name')
+            notification_type= request.user.get('notification_type')
+            # commentList= Comment.objects.filter(id=commentid)
+            users2= User.objects.filter(username= username2)
+            username1= request.user.username
+            notification= Notification(user=users2[0],notification_type=notification_type,post_id=post_id,notifier= username1)
+            notification.save()
+            return Response(NotificationSerializer(notification).data, status= status.HTTP_200_OK)
+        return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
 
 class GetChat(APIView):
     serializer_class= ChatSerializer
@@ -235,6 +254,21 @@ class GetCurrentUserChats(APIView):
             if len(user)>0:
                 chats= Chat.objects.filter(user= user[0])
                 return Response(ChatSerializer(chats,many= True).data, status= status.HTTP_200_OK)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class GetCurrentUserNotifications(APIView):
+    serializer_class= NotificationSerializer
+
+    def get(self, request, format=None):
+        if not request.user.is_authenticated:
+            return HttpResponse('Not logged in')
+        username= request.user.username
+        if username != None:
+            user= User.objects.filter(username=username)
+            if len(user)>0:
+                notifications= Notification.objects.filter(user= user[0])
+                return Response(NotificationSerializer(notifications,many= True).data, status= status.HTTP_200_OK)
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
     

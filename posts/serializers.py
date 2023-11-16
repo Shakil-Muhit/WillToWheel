@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Post, Comment, Reply, PostImage, Chat, ChatText
+from .models import Post, Comment, Reply, PostImage, Chat, ChatText, Notification
 
 class PostImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,6 +33,11 @@ class ChatTextSerializer(serializers.ModelSerializer):
         model= ChatText
         fields= ('id','body','person')
 
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Notification
+        fields= ('id','post_id','notifier','read_status','notification_type')
+
 class AddPostSerializer(serializers.Serializer):
     body= serializers.CharField(max_length= 2000)
     post_type= serializers.CharField(max_length= 20)
@@ -47,6 +52,11 @@ class AddReplySerializer(serializers.Serializer):
 class AddChatTextSerializer(serializers.Serializer):
     # texter= serializers.CharField(max_length= 200)
     body= serializers.CharField(max_length= 2000)
+
+class AddNotificationSerializer(serializers.Serializer):
+    notification_type= serializers.IntegerField()
+    post_id= serializers.IntegerField()
+    receiver_name= serializers.CharField(max_length= 50)
 
 class VoteSerializer(serializers.ModelSerializer):
     id= serializers.IntegerField()

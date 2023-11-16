@@ -25,6 +25,13 @@ class ChatText(models.Model):
     body= models.CharField(max_length=500)
     person= models.IntegerField()
 
+class Notification(models.Model):
+    user= models.ForeignKey(User, on_delete=models.CASCADE,related_name='notifications')
+    post_id= models.IntegerField()
+    notifier= models.CharField(max_length=300)
+    read_status= models.IntegerField()
+    notification_type= models.IntegerField()
+
 class Comment(models.Model):
     post= models.ForeignKey(Post, on_delete=models.CASCADE, related_name= 'comments')
     author= models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'comments')
