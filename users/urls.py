@@ -6,7 +6,8 @@ from . import views
 from .views import RegisterUserView, LoginUserView, LogoutUserView, GetProfile
 from .views import GetUserPosts, GetCurrentUser, GetCurrentUserPosts, GetCommunityPosts
 # from .views import  BanUserFromCommenting, BanUserFromPosting, UnbanUser
-from .views import  GetUsername, UpdateDP, CsrfView, CurrentUserDP, FollowUser
+from .views import  GetUsername, UpdateDP, CsrfView, CurrentUserDP, FollowUser, GetPostsBySearch
+from .views import GetUsersBySearch
 
 class UpdateDPToken(UpdateDP):
     authentication_classes = ()
@@ -18,6 +19,8 @@ urlpatterns= [
     path("getuser", GetProfile.as_view(), name="get_user"),
     path("followuser", FollowUser.as_view(), name="follow_user"),
     path("getuserposts",GetUserPosts.as_view(), name="get_user_posts"),
+    path("getpostsbysearch",GetPostsBySearch.as_view(), name="get_posts_by_search"),
+    path("getusersbysearch",GetUsersBySearch.as_view(), name="get_users_by_search"),
     path("getcommunityposts",GetCommunityPosts.as_view(), name="get_community_posts"),
     path("getcurrentuser",GetCurrentUser.as_view(), name="get_current_user"),
     path("getcurrentuserposts",GetCurrentUserPosts.as_view(), name="get_current_user_posts"),

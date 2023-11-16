@@ -181,6 +181,28 @@ class GetUserPosts(APIView):
                 return Response(PostSerializer(posts,many= True).data, status= status.HTTP_200_OK)
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class GetPostsBySearch(APIView):
+    serializer_class= PostSerializer
+
+    def get(self, request, format=None):
+        search_string= request.GET.get('search_string')
+        if search_string != None:
+            posts= Post.objects.filter(body__icontains=search_string)
+            return Response(PostSerializer(posts,many= True).data, status= status.HTTP_200_OK)
+            # return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class GetUsersBySearch(APIView):
+    serializer_class= ProfileSerializer
+
+    def get(self, request, format=None):
+        search_string= request.GET.get('search_string')
+        if search_string != None:
+            users= User.objects.filter(username__icontains=search_string)
+            return Response(ProfileSerializer(users,many= True).data, status= status.HTTP_200_OK)
+            # return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
 
 class GetCurrentUserPosts(APIView):
     serializer_class= PostSerializer
@@ -233,3 +255,4 @@ class GetCommunityPosts(APIView):
                 return Response(PostSerializer(posts,many= True).data, status= status.HTTP_200_OK)
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+    
